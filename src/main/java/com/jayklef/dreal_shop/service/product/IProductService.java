@@ -1,15 +1,17 @@
 package com.jayklef.dreal_shop.service.product;
 
 import com.jayklef.dreal_shop.entity.Product;
+import com.jayklef.dreal_shop.request.AddProductRequest;
+import com.jayklef.dreal_shop.request.UpdateProductRequest;
 
 import java.util.List;
 
 public interface IProductService {
-    Product createProduct(Product product);
+    Product addProduct(AddProductRequest product);
 
     Product getProductById(Long id);
 
-    Product updateProduct(Long id, Product product);
+    Product updateProduct(UpdateProductRequest request, Long id);
 
     void deleteProduct(Long id);
 
@@ -21,6 +23,6 @@ public interface IProductService {
     List<Product> getProductByCategoryAndBrand(String category, String brand);
     List<Product> getProductByName(String name);
     List<Product> getProductByBrandAndName(String name, String category);
-    List<Product> countProductsByBrandAndName(String brand, String name);
+    Long countProductsByBrandAndName(String brand, String name);
 
 }
