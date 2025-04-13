@@ -61,5 +61,28 @@ public class ProductController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id) {
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.ok(new ApiResponse("Product deleted successfully", null));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND)
+                    .body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/brand/{brand-name}")
+    public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand,
+                                                     @RequestParam String name) {
+        try {
+            List<Product> product = productService.getProductByBrandAndName(brand, name);
+            if (product.isEmpty()) {
+                return ResponseEntity.status(NOT_FOUND)
+                        .body(new ApiResponse("No product found with the given brand and name", null));
+            }
+            return ResponseEntity.ok(new ApiResponse("Product retrieved successfully", product));
+    }
+
 
 }
