@@ -2,11 +2,11 @@ package com.jayklef.dreal_shop.service.product;
 
 import com.jayklef.dreal_shop.entity.Category;
 import com.jayklef.dreal_shop.entity.Product;
+import com.jayklef.dreal_shop.exception.ResourceNotFoundException;
 import com.jayklef.dreal_shop.repository.CategoryRepository;
 import com.jayklef.dreal_shop.repository.ProductRepository;
 import com.jayklef.dreal_shop.request.AddProductRequest;
 import com.jayklef.dreal_shop.request.UpdateProductRequest;
-import com.jayklef.dreal_shop.service.product.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +52,7 @@ public class ProductService implements IProductService{
     public Product getProductById(Long id) {
 
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ProductNotFoundException("Product not found"));
+                () -> new ResourceNotFoundException("Product not found"));
         return product;
     }
 
@@ -61,7 +61,7 @@ public class ProductService implements IProductService{
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository::save)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     private Product updateExistingProduct(Product existingProduct, UpdateProductRequest request) {
@@ -80,7 +80,7 @@ public class ProductService implements IProductService{
     @Override
     public void deleteProduct(Long id) {
         productRepository.findById(id).ifPresentOrElse(productRepository::delete, () -> {
-            throw new ProductNotFoundException("Product not found");});
+            throw new ResourceNotFoundException("Product not found");});
     }
 
     @Override
